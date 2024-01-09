@@ -3,13 +3,25 @@
         <div class="d-flex justify-content-between flex-wrap">
             <div class="d-flex gap-1 mb-1">
                 <div class="d-none d-md-block">
-                    <div class="w-100 d-flex justify-content-between">
+                    <div class="w-100 ms-2 d-flex justify-content-between">
                         <div class="d-flex gap-3 flex-wrap">
-                            <div class="form-group" style="min-width: 200px;">
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect11">City</label>
+                                <select v-on:change="store.dispatch('onImportFilterChanged')"
+                                    v-model="store.state.filter2.city" class="form-control input-sm"
+                                    id="exampleFormControlSelect1">
+                                    <option value="" selected disabled>Choose City</option>
+                                    <option value="all" selected>All</option>
+                                    <option v-for="c in store.getters.get_imported_city" :value="c">{{ c }}</option>
+                                </select>
+                            </div>
+                            <div v-if="store.state.filter2.city != 'all'" class="form-group">
                                 <label for="exampleFormControlSelect1">Municipality</label>
-                                <select v-on:change="onSelectMinucipality" v-model="store.state.filter2.municipality"
-                                    class="form-control" id="exampleFormControlSelect1">
-                                    <option value="" disabled selected>Choose municipality</option>
+                                <select v-on:change="store.dispatch('onImportFilterChanged')"
+                                    v-model="store.state.filter2.municipality" class="form-control"
+                                    id="exampleFormControlSelect1">
+                                    <option value="" disabled>Choose municipality</option>
+                                    <option value="all" selected>All</option>
                                     <template v-for="(municipality, i) in store.getters.get_imported_municipality">
                                         <option v-if="i == 0" :key="i++" :value="municipality" selected>{{ municipality }}
                                         </option>
@@ -17,10 +29,11 @@
                                     </template>
                                 </select>
                             </div>
-                            <div v-if="store.state.filter2.municipality != ''" class="form-group" style="min-width: 200px;">
+                            <div v-if="store.state.filter2.municipality != 'all'" class="form-group">
                                 <label for="exampleFormControlSelect1">Barangay</label>
-                                <select v-on:change="onSelectBrgy" v-model="store.state.filter2.barangay"
-                                    class="form-control" id="exampleFormControlSelect1">
+                                <select v-on:change="store.dispatch('onImportFilterChanged')"
+                                    v-model="store.state.filter2.barangay" class="form-control"
+                                    id="exampleFormControlSelect1">
                                     <option value="" disabled>Choose barangay</option>
                                     <option value="all" selected>All</option>
                                     <template v-for="(brgy, i) in store.getters.get_imported_brgy">
@@ -28,10 +41,10 @@
                                     </template>
                                 </select>
                             </div>
-                            <div v-if="store.state.filter2.barangay != 'all'" class="form-group" style="min-width: 200px;">
+                            <div v-if="store.state.filter2.barangay != 'all'" class="form-group">
                                 <label for="exampleFormControlSelect1">Purok</label>
-                                <select v-on:change="onSelectPurok" v-model="store.state.filter2.purok" class="form-control"
-                                    id="exampleFormControlSelect1">
+                                <select v-on:change="store.dispatch('onImportFilterChanged')"
+                                    v-model="store.state.filter2.purok" class="form-control" id="exampleFormControlSelect1">
                                     <option value="all" selected>All</option>
                                     <template v-for="i in store.getters.get_imported_purok">
                                         <option :value="i">Purok {{ i }}</option>
@@ -40,7 +53,8 @@
                             </div>
                             <div v-if="store.state.filter2.purok != 'all'" class="form-group" style="min-width: 200px;">
                                 <label for="exampleFormControlSelect1">House No.</label>
-                                <select v-on:change="onSelectHouseNo"  v-model="store.state.filter2.house_number" class="form-control"
+                                <select v-on:change="store.dispatch('onImportFilterChanged')"
+                                    v-model="store.state.filter2.house_number" class="form-control"
                                     id="exampleFormControlSelect1">
                                     <option value="all" selected>All</option>
                                     <template v-for="i in store.getters.get_imported_house_number">
@@ -50,10 +64,6 @@
                             </div>
 
                         </div>
-                        <!-- <div class="d-flex gap-1">
-                                        <input type="text" class="form-control" placeholder="Search first, last and middle name" style="height: 31px; min-width: 400px;">
-                                        <a class="btn btn-sm btn-secondary">Search</a>
-                                    </div>d -->
                     </div>
                 </div>
             </div>
@@ -74,49 +84,63 @@
                 <!-- <span class="p-3">Filter :</span> -->
                 <div class="w-100 d-flex justify-content-between">
                     <div class="d-flex gap-3 flex-wrap">
-                        <div class="form-group" style="min-width: 200px;">
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect11">City</label>
+                            <select v-on:change="store.dispatch('onImportFilterChanged')" v-model="store.state.filter2.city"
+                                class="form-control input-sm" id="exampleFormControlSelect1">
+                                <option value="" selected disabled>Choose City</option>
+                                <option value="all" selected>All</option>
+                                <option v-for="c in store.getters.get_imported_city" :value="c">{{ c }}</option>
+                            </select>
+                        </div>
+                        <div v-if="store.state.filter2.city != 'all'" class="form-group">
                             <label for="exampleFormControlSelect1">Municipality</label>
-                            <select v-on:change="onSelectMinucipality" v-model="store.state.filter2.municipality"
-                                class="form-control" id="exampleFormControlSelect1">
+                            <select v-on:change="store.dispatch('onImportFilterChanged')"
+                                v-model="store.state.filter2.municipality" class="form-control"
+                                id="exampleFormControlSelect1">
+                                <option value="" disabled>Choose municipality</option>
+                                <option value="all" selected>All</option>
                                 <template v-for="(municipality, i) in store.getters.get_imported_municipality">
-                                    <option v-if="i == 0" :key="i++" :value="municipality" selected>{{ municipality }}</option>
+                                    <option v-if="i == 0" :key="i++" :value="municipality" selected>{{ municipality }}
+                                    </option>
                                     <option v-else :value="municipality">{{ municipality }}</option>
                                 </template>
                             </select>
                         </div>
-                        <div class="form-group" style="min-width: 200px;">
+                        <div v-if="store.state.filter2.municipality != 'all'" class="form-group">
                             <label for="exampleFormControlSelect1">Barangay</label>
-                            <select v-on:change="onSelectBrgy" v-model="store.state.filter2.barangay" class="form-control"
-                                id="exampleFormControlSelect1">
-                                <option value="" selected disabled>Choose barangay</option>
-                                <template v-for="(brgy, i) in store.state.filter2.municipality.brgy">
+                            <select v-on:change="store.dispatch('onImportFilterChanged')"
+                                v-model="store.state.filter2.barangay" class="form-control" id="exampleFormControlSelect1">
+                                <option value="" disabled>Choose barangay</option>
+                                <option value="all" selected>All</option>
+                                <template v-for="(brgy, i) in store.getters.get_imported_brgy">
                                     <option :value="brgy"> {{ brgy }}</option>
                                 </template>
                             </select>
                         </div>
-                        <div v-if="store.state.filter2.barangay" class="form-group" style="min-width: 200px;">
+                        <div v-if="store.state.filter2.barangay != 'all'" class="form-group">
                             <label for="exampleFormControlSelect1">Purok</label>
-                            <select v-model="store.state.filter2.purok" class="form-control" id="exampleFormControlSelect1">
+                            <select v-on:change="store.dispatch('onImportFilterChanged')"
+                                v-model="store.state.filter2.purok" class="form-control" id="exampleFormControlSelect1">
                                 <option value="all" selected>All</option>
-                                <template v-for="i in store.state.filter2.barangay.purok">
+                                <template v-for="i in store.getters.get_imported_purok">
                                     <option :value="i">Purok {{ i }}</option>
                                 </template>
                             </select>
                         </div>
-                        <div v-if="store.state.filter2.purok" class="form-group" style="min-width: 200px;">
+                        <div v-if="store.state.filter2.purok != 'all'" class="form-group" style="min-width: 200px;">
                             <label for="exampleFormControlSelect1">House No.</label>
-                            <select v-model="store.state.filter.purok" class="form-control" id="exampleFormControlSelect1">
+                            <select v-on:change="store.dispatch('onImportFilterChanged')"
+                                v-model="store.state.filter2.house_number" class="form-control"
+                                id="exampleFormControlSelect1">
                                 <option value="all" selected>All</option>
-                                <template v-for="i in store.state.filter2.barangay.purok">
-                                    <option :value="i">Purok {{ i }}</option>
+                                <template v-for="i in store.getters.get_imported_house_number">
+                                    <option :value="i">{{ i }}</option>
                                 </template>
                             </select>
                         </div>
+
                     </div>
-                    <!-- <div class="d-flex gap-1">
-                                        <input type="text" class="form-control" placeholder="Search first, last and middle name" style="height: 31px; min-width: 400px;">
-                                        <a class="btn btn-sm btn-secondary">Search</a>
-                                    </div>d -->
                 </div>
             </div>
             <div class="w-100 d-flex justify-content-between mt-4">
@@ -190,16 +214,6 @@ function onFilterCollapse() {
         $('#btn-filter-collapse i').removeClass('fa-chevron-down')
         $('#btn-filter-collapse i').addClass('fa-chevron-up')
     }
-}
-
-function onSelectMinucipality() {
-    store.dispatch("clearBrgySelected2")
-}
-function onSelectBrgy() {
-    store.dispatch("clearPurokSelected2")
-}
-function onSelectPurok() {
-    store.dispatch("clearHouseNoSelected2")
 }
 
 function onSelectAll() {

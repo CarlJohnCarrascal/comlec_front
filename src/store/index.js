@@ -10,8 +10,8 @@ const store = createStore({
             }
         },
         filter: {
-            city: "Sorsogon",
-            municipality: "",
+            city: "all",
+            municipality: "all",
             barangay: "all",
             purok: "all",
             house_number: "all",
@@ -32,8 +32,8 @@ const store = createStore({
             },
         },
         filter2: {
-            city: "Sorsogon",
-            municipality: "",
+            city: "all",
+            municipality: "all",
             barangay: "all",
             purok: "all",
             house_number: "all",
@@ -648,10 +648,13 @@ const store = createStore({
         // #region voters
         get_voters (state){
             let list = state.voters.filter(v => {
-                if(v.city.toLowerCase() == state.filter.city.toLowerCase() && 
+                if(state.filter.city == "all") return true
+                if(state.filter.city.toLowerCase() == v.city.toLowerCase() &&
+                state.filter.municipality.toLowerCase() == 'all') return true
+                if(v.city.toLowerCase() == state.filter.city.toLowerCase() &&
                     v.municipality.toLowerCase() == state.filter.municipality.toLowerCase())
                 {
-                    if(state.filter.city == "") return false
+                    
                     if(state.filter.barangay == "all") return true
                     else if (v.barangay == state.filter.barangay && state.filter.purok == "all") return true
                     else if (v.barangay == state.filter.barangay && v.purok == state.filter.purok && state.filter.house_number == "all") return true
@@ -749,6 +752,9 @@ const store = createStore({
         get_imported_voters (state){
             if(!state.filter2.municipality) return []
             let list = state.imported_voters.filter(v => {
+                if(state.filter2.city == "all") return true
+                if(state.filter2.city.toLowerCase() == v.city.toLowerCase() &&
+                state.filter2.municipality.toLowerCase() == 'all') return true
                 if(v.city.toLowerCase() == state.filter2.city.toLowerCase() && 
                 v.municipality.toLowerCase() == state.filter2.municipality.toLowerCase())
                 {
@@ -791,7 +797,20 @@ const store = createStore({
                 else return false
             })
 
-            return list
+            state.filter2.total_item = list.length
+            state.filter2.total_page = Math.floor(list.length / state.filter2.item_per_page) + 1
+
+            let start = state.filter2.item_per_page * (state.filter2.current_page - 1)
+            let end = Number(state.filter2.item_per_page * (state.filter2.current_page - 1)) + Number(state.filter2.item_per_page)
+            let e2 = end
+            if(end > state.filter2.total_item) e2 = state.filter2.total_item
+            if(state.filter2.total_item == 0){
+                start = -1
+                end = 0
+                e2 = 0
+            }
+            state.filter2.showing = (start + 1) + " - " + e2
+            return list.slice(start, end)
         },
         get_imported_city (state){
             return [...new Set( state.imported_voters.map(obj => obj.city)) ];
@@ -1172,17 +1191,25 @@ const store = createStore({
                 state.imported_voters.push(d)
             })
         },
-        clearBrgySelected2 ({state}){
-            state.filter2.barangay = "all"
-            state.filter2.purok = "all"
-            state.filter2.house_number = "all"
-        },
-        clearPurokSelected2 ({state}){
-            state.filter2.purok = "all"
-            state.filter2.house_number = "all"
-        },
-        clearHouseNoSelected2 ({state}){
-            state.filter2.house_number = "all"
+        onImportFilterChanged ({state}) {
+            if(state.filter2.city == 'all'){
+                state.filter2.municipality = 'all'
+                state.filter2.barangay = 'all'
+                state.filter2.purok = 'all'
+                state.filter2.house_number = 'all'
+            }
+            if(state.filter2.municipality == 'all'){
+                state.filter2.barangay = 'all'
+                state.filter2.purok = 'all'
+                state.filter2.house_number = 'all'
+            }
+            if(state.filter2.barangay == 'all'){
+                state.filter2.purok = 'all'
+                state.filter2.house_number = 'all'
+            }
+            if(state.filter2.purok == 'all'){
+                state.filter2.house_number = 'all'
+            }
         },
         selectAllVoters2 ({state}, data) {
             data.voters.forEach(v => {
@@ -1208,11 +1235,38 @@ const store = createStore({
                 state.imported_voters[find].mark = data.type.toUpperCase()
             }
         },
+        nextPage2({state}, i) {
+            state.filter2.current_page += i
+        },
         // #endregion
 
         // #region Houses
         setSelectedHouse ({state}, hn) {
             state.house_filter.house_number = hn
+        },
+        AddNewMember ({state}, data){
+            console.log(data)
+            let v = {
+                "check": false,
+                "id": Date.now().toString(36) + Math.random().toString(36).substr(2),
+                "house_number": state.house_filter.house_number,
+                "purok": state.house_filter.purok,
+                "barangay": state.house_filter.barangay,
+                "municipality": state.house_filter.municipality,
+                "city": state.house_filter.city,
+                "fname": data.firstname,
+                "mname": data.middlename,
+                "lname": data.lastname,
+                "suffix": data.suffix,
+                "gender": data.gender,
+                "mark": "",
+                "status": "",
+                "isHead": false
+            }
+            state.voters.push(v)
+        },
+        markAsHead ({state}, house_id) {
+            let list = voters.filter(v => v.house_id == house_id)
         },
         // #endregion
 
@@ -1231,6 +1285,7 @@ const store = createStore({
                 state.report_filter.purok = 'all'
             }
         },
+
         // #endregion
     }
 })

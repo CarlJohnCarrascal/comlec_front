@@ -16,7 +16,7 @@
             <div class="card p-2">
                 <div class="table-responsive">
                     <table class="table caption-top px-2">
-                        <caption class="pt-0 m-2 pb-0">
+                        <caption class="pt-0 m-2 pb-0 d-none">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb mb-0">
                                     <li v-if="store.state.filter.municipality != 'all'" class="breadcrumb-item active" aria-current="page">{{store.state.filter.municipality}}</li>

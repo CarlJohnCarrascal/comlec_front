@@ -32,7 +32,7 @@
     </div>
     <div v-else class="row text-center">
         <h5 class="text-danger">
-            Please select location first!
+            Please select house first!
         </h5>
     </div>
     <div v-if="store.getters.check_house_add_member" class="row m-0">
@@ -61,7 +61,7 @@
                             <td v-else></td>
                             <td class="" style="min-width: 200px;">
                                 <div class="item-action d-flex gap-1 justify-content-end">
-                                    <button v-if="!record.isHead" type="button" class="btn btn-sm btn-primary me-3">Mark as Head</button> 
+                                    <button v-on:click="store.dispatch('markAsHead',record.house_id)" v-if="!record.isHead" type="button" class="btn btn-sm btn-primary me-3">Mark as Head</button> 
                                     <button type="button" class="btn btn-sm btn-info">View</button>
                                 </div>
                             </td>
