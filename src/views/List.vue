@@ -96,7 +96,8 @@
                                 <td><label class="w-100" :for="'voters-'+ i">{{ record.mark}}</label></td>
                                 <td class="" style="min-width: 200px;">
                                     <div class="d-flex gap-1 justify-content-end">
-                                        <button type="button" v-on:click="showMember(record)" class="btn btn-sm btn-info">Member's</button>
+                                        <button v-on:click="$router.push('/house/member'), store.dispatch('setSelectedHouse', record.house_number)" type="button" class="btn btn-sm btn-info">View</button>
+                                        <!-- <button type="button" v-on:click="showMember(record)" class="btn btn-sm btn-info">Member's</button> -->
                                         <div class="dropdown">
                                             <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 Mark
