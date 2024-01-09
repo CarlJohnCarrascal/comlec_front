@@ -1,0 +1,17 @@
+/* @import './base.css'; */
+/* @import 'fontawesome/fontawesome-free/css/fontawesome.min.css';
+@import 'fontawesome/fontawesome-free/css/brands.min.css';
+@import 'fontawesome/fontawesome-free/css/solid.min.css'; */
+
+#app {
+  margin: 0 auto;
+  font-weight: normal;
+  overflow: none;
+  min-height: 100vh;
+  min-width: 600px;
+  padding-bottom: 5rem;
+  background-color: rgb(204, 204, 204);
+}
+body {
+  background-color: rgb(204, 204, 204);
+}
