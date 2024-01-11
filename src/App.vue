@@ -3,11 +3,15 @@ import { RouterView } from 'vue-router'
 import $ from 'jquery'
 import { onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 const router = useRouter()
+const store = useStore()
 onMounted( async ()=>{
   await router.isReady()
   let r = router.currentRoute.value.meta.btn
   onMenuClick(r)
+  store.commit('loadLocalState')
+  store.dispatch('load_voters')
 })
 
 function onMenuClick(e){

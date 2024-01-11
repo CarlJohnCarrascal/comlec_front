@@ -1,7 +1,7 @@
 <template>
     <div class="w-100" style="min-height: 300px;">
         <Bar class="w-100" id="my-bar-chart-id" 
-        :data="store.getters.get_bar_chart_report_data" 
+        :data="store.state.report_filter.chart.bar.data" 
         :options="store.state.report_filter.chart.bar.options" />
     </div>
 </template>

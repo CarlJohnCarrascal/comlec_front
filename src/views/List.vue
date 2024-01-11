@@ -68,10 +68,11 @@
                                 <th scope="col">First Name</th>
                                 <th scope="col">Middle Name</th>
                                 <th scope="col">Last Name</th>
-                                <th scope="col" class="d-none">Municipality</th>
-                                <th scope="col" class="d-none">Barangay</th>
-                                <th scope="col">Purok</th>
-                                <th scope="col" class="text-center">House No.</th>
+                                <th scope="col"><span v-if="store.state.filter.city == 'all'">City</span></th>
+                                <th scope="col"><span v-if="store.state.filter.municipality == 'all'">Municipality</span></th>
+                                <th scope="col"><span v-if="store.state.filter.barangay == 'all'">Barangay</span></th>
+                                <th scope="col"><span v-if="store.state.filter.purok == 'all'">Purok</span></th>
+                                <th scope="col" class="text-center"><span v-if="store.state.filter.house_number == 'all'">House No.</span></th>
                                 <th scope="col"></th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Mark</th>
@@ -87,10 +88,11 @@
                                 <td><label class="w-100" :for="'voters-'+ i">{{ record.fname }}</label></td>
                                 <td><label class="w-100" :for="'voters-'+ i">{{ record.mname }}</label></td>
                                 <td><label class="w-100" :for="'voters-'+ i">{{ record.lname }}</label></td>
-                                <td class="d-none"><label class="w-100 " :for="'voters-'+ i">{{ record.municipality }}</label></td>
-                                <td class="d-none"><label class="w-100 " :for="'voters-'+ i">{{ record.barangay }}</label></td>
-                                <td><label class="w-100" :for="'voters-'+ i">{{ record.purok }}</label></td>
-                                <td class="text-center"><label class="w-100" :for="'voters-'+ i">{{ record.house_number }}</label></td>
+                                <td><label v-if="store.state.filter.city == 'all'" class="w-100 " :for="'voters-'+ i">{{ record.city }}</label></td>
+                                <td><label v-if="store.state.filter.municipality == 'all'" class="w-100 " :for="'voters-'+ i">{{ record.municipality }}</label></td>
+                                <td><label v-if="store.state.filter.barangay == 'all'" class="w-100 " :for="'voters-'+ i">{{ record.barangay }}</label></td>
+                                <td><label v-if="store.state.filter.purok == 'all'" class="w-100" :for="'voters-'+ i">{{ record.purok }}</label></td>
+                                <td class="text-center"><label v-if="store.state.filter.house_number == 'all'" class="w-100" :for="'voters-'+ i">{{ record.house_number }}</label></td>
                                 <td class="fs-8 text-nowrap" style="font-size: xx-small;"><label v-if="record.isHead" class="w-100" :for="'voters-'+ i">House Head</label></td>
                                 <td><label class="w-100" :for="'voters-'+ i"></label></td>
                                 <td><label class="w-100" :for="'voters-'+ i">{{ record.mark}}</label></td>
@@ -115,7 +117,7 @@
                             <tr class="d-nones py-2" v-if="store.state.voters.length <= 0">
                                 <td colspan="15" class="text-center fw-bold py-2" style="font-size: xx-small;">No Record Found</td>
                             </tr>
-                            <tr class="border-none">
+                            <tr class="border-none user-select-none" role="button">
                                 <td colspan="5"> Showing {{ store.state.filter.showing }} of 
                                     <span class="fw-bolds">{{ store.state.filter.total_item }} </span> 
                                     item, 
@@ -171,7 +173,7 @@
                 </div>
                 <div class="modal-body overflow-auto" style="max-height: 200px;">
                     <p>Please click confirm to mark: </p>
-                    <p class="mb-1" v-for="sv in store.getters.get_voters.filter(v => v.check == true)">{{ sv.fname + " " + sv.mname + " " + sv.lname }}</p>
+                    <p class="mb-1" v-for="sv in store.getters.get_voters">{{ sv.fname + " " + sv.mname + " " + sv.lname }}</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

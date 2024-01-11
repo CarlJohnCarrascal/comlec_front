@@ -12,7 +12,7 @@
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Voters</div>
 
 
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ store.state.voters.length }}</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ store.state.report_filter.chart.total.voters }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-users fa-2x text-primary"></i>
@@ -30,7 +30,7 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Right Side
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ store.getters.get_total_report.right }}</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ store.state.report_filter.chart.total.right }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-users fa-2x text-success"></i>
@@ -48,7 +48,7 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Left Side
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ store.getters.get_total_report.left }}</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ store.state.report_filter.chart.total.left }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-users fa-2x text-danger"></i>
@@ -66,7 +66,7 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">Undecided
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ store.getters.get_total_report.undecided }}</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ store.state.report_filter.chart.total.undecided }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-users fa-2x text-secondary"></i>
@@ -109,11 +109,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import Bar from '../components/Chart/Bar.vue';
 import { useStore } from 'vuex';
 const store = useStore()
 
+onMounted(async()=>{
+    store.dispatch('get_bar_chart_report_data')
+})
 
 </script>
 

@@ -1,4 +1,12 @@
 import { createStore } from 'vuex'
+import axios from 'axios'
+
+//axios.defaults.headers.common['Authorization'] = 'Bearer ' + getCookie2('token');
+axios.defaults.headers.common['Content-Type'] = 'application/json';
+let hostname = location.origin + "/api/";
+hostname = "http://127.0.0.1:8000/api/";
+
+axios.defaults.baseURL = hostname;
 const store = createStore({
     state: {
         forms: {
@@ -6,7 +14,7 @@ const store = createStore({
                 city: "", municipality: "", barangay: "", purok: "",
                 house_number: "", fname: "", mname: "", lname: "", suffix: "",
                 birthdate: null, gender: "", status: "", mark: "undecided",
-                isHead: false
+                ishead: false
             }
         },
         filter: {
@@ -61,467 +69,7 @@ const store = createStore({
                 item_per_page: 20
             }
         },
-        voters: [
-            {
-                "check": false,
-                "id": "lr5r3p150oo1s9xtjj3",
-                "house_number": "1",
-                "purok": "1",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "CHARLENE",
-                "mname": "",
-                "lname": "MERCULIO",
-                "suffix": "",
-                "gender": "",
-                "mark": "Leader",
-                "status": "",
-                "isHead": "TRUE"
-            },
-            {
-                "check": false,
-                "id": "lr5r3p18nz1cc3o52li",
-                "house_number": "1",
-                "purok": "1",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "CHERIE ROSE",
-                "mname": "",
-                "lname": "LOPEZ",
-                "suffix": "",
-                "gender": "",
-                "mark": "Right",
-                "status": "",
-                "isHead": ""
-            },
-            {
-                "check": false,
-                "id": "lr5r3p183qao1mycfp5",
-                "house_number": "2",
-                "purok": "1",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "RACHEL",
-                "mname": "",
-                "lname": "HIBON",
-                "suffix": "",
-                "gender": "",
-                "mark": "Left",
-                "status": "",
-                "isHead": "TRUE"
-            },
-            {
-                "check": false,
-                "id": "lr5r3p18mdqesu90tup",
-                "house_number": "3",
-                "purok": "1",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "DANILO",
-                "mname": "",
-                "lname": "LLUNAR",
-                "suffix": "",
-                "gender": "",
-                "mark": "Left",
-                "status": "",
-                "isHead": "TRUE"
-            },
-            {
-                "check": false,
-                "id": "lr5r3p18q8y4i8cwhrc",
-                "house_number": "3",
-                "purok": "1",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "MELONIE",
-                "mname": "",
-                "lname": "LLUNAR",
-                "suffix": "",
-                "gender": "",
-                "mark": "Left",
-                "status": "",
-                "isHead": ""
-            },
-            {
-                "check": false,
-                "id": "lr5r3p18c4qzp76j8n",
-                "house_number": "3",
-                "purok": "1",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "DAN MARK",
-                "mname": "",
-                "lname": "LLUNAR",
-                "suffix": "",
-                "gender": "",
-                "mark": "Left",
-                "status": "",
-                "isHead": ""
-            },
-            {
-                "check": false,
-                "id": "lr5r3p18agb5sk49qd6",
-                "house_number": "4",
-                "purok": "1",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "EDWIN",
-                "mname": "",
-                "lname": "LOVERIA",
-                "suffix": "",
-                "gender": "",
-                "mark": "Right",
-                "status": "",
-                "isHead": "TRUE"
-            },
-            {
-                "check": false,
-                "id": "lr5r3p1bck738r7xdf9",
-                "house_number": "5",
-                "purok": "1",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "ALLAN",
-                "mname": "",
-                "lname": "BALLESTEROS",
-                "suffix": "",
-                "gender": "",
-                "mark": "Right",
-                "status": "",
-                "isHead": ""
-            },
-            {
-                "check": false,
-                "id": "lr5r3p1bclaj1r5g2af",
-                "house_number": "5",
-                "purok": "1",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "MARY ANN",
-                "mname": "",
-                "lname": "LOVERIA",
-                "suffix": "",
-                "gender": "",
-                "mark": "Right",
-                "status": "",
-                "isHead": ""
-            },
-            {
-                "check": false,
-                "id": "lr5r3p1boucnu4ykmvm",
-                "house_number": "6",
-                "purok": "1",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "LYDIA",
-                "mname": "",
-                "lname": "HABIL",
-                "suffix": "",
-                "gender": "",
-                "mark": "Undecided",
-                "status": "",
-                "isHead": "TRUE"
-            },
-            {
-                "check": false,
-                "id": "lr5r3p1bfreeaycmyo",
-                "house_number": "6",
-                "purok": "1",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "MICHAEL",
-                "mname": "",
-                "lname": "APOLINAR",
-                "suffix": "",
-                "gender": "",
-                "mark": "Undecided",
-                "status": "",
-                "isHead": ""
-            },
-            {
-                "check": false,
-                "id": "lr5r3p1bwjrsfyo15d",
-                "house_number": "6",
-                "purok": "1",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "VERNA",
-                "mname": "",
-                "lname": "HABEL",
-                "suffix": "",
-                "gender": "",
-                "mark": "Undecided",
-                "status": "",
-                "isHead": ""
-            },
-            {
-                "check": false,
-                "id": "lr5r3p1blgg4x6wzet",
-                "house_number": "1",
-                "purok": "2",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "EVELYN",
-                "mname": "",
-                "lname": "QUAREN",
-                "suffix": "",
-                "gender": "",
-                "mark": "Undecided",
-                "status": "",
-                "isHead": ""
-            },
-            {
-                "check": false,
-                "id": "lr5r3p1bht6bfbbm2s",
-                "house_number": "1",
-                "purok": "2",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "CHRISTINE",
-                "mname": "",
-                "lname": "HABIL",
-                "suffix": "",
-                "gender": "",
-                "mark": "Undecided",
-                "status": "",
-                "isHead": ""
-            },
-            {
-                "check": false,
-                "id": "lr5r3p1bv7fmeh2v33s",
-                "house_number": "1",
-                "purok": "2",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "DOMINADOR",
-                "mname": "",
-                "lname": "HAGOS",
-                "suffix": "JR",
-                "gender": "",
-                "mark": "Right",
-                "status": "",
-                "isHead": "TRUE"
-            },
-            {
-                "check": false,
-                "id": "lr5r3p1bq9jsk1tk229",
-                "house_number": "1",
-                "purok": "2",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "MARIA LORENA",
-                "mname": "",
-                "lname": "HAGOS",
-                "suffix": "",
-                "gender": "",
-                "mark": "Right",
-                "status": "",
-                "isHead": ""
-            },
-            {
-                "check": false,
-                "id": "lr5r3p1bz8u0takumf",
-                "house_number": "1",
-                "purok": "2",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "DESIREE NICOLE",
-                "mname": "",
-                "lname": "HAGOS",
-                "suffix": "",
-                "gender": "",
-                "mark": "Right",
-                "status": "",
-                "isHead": ""
-            },
-            {
-                "check": false,
-                "id": "lr5r3p1bjqpd0l5pp6i",
-                "house_number": "1",
-                "purok": "3",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "ROLANDO",
-                "mname": "",
-                "lname": "GONZALES",
-                "suffix": "",
-                "gender": "",
-                "mark": "Leader",
-                "status": "",
-                "isHead": "TRUE"
-            },
-            {
-                "check": false,
-                "id": "lr5r3p1bz1jhccilzb",
-                "house_number": "1",
-                "purok": "3",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "JANET",
-                "mname": "",
-                "lname": "GONZALES",
-                "suffix": "",
-                "gender": "",
-                "mark": "Right",
-                "status": "",
-                "isHead": ""
-            },
-            {
-                "check": false,
-                "id": "lr5r3p1bkbdpuxxal4b",
-                "house_number": "1",
-                "purok": "3",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "JOSEPH",
-                "mname": "",
-                "lname": "GONZALES",
-                "suffix": "",
-                "gender": "",
-                "mark": "Right",
-                "status": "",
-                "isHead": ""
-            },
-            {
-                "check": false,
-                "id": "lr5r3p1b1f7wy3hx6mf",
-                "house_number": "2",
-                "purok": "3",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "EDEN",
-                "mname": "",
-                "lname": "GUARDACASA",
-                "suffix": "",
-                "gender": "",
-                "mark": "Undecided",
-                "status": "",
-                "isHead": "TRUE"
-            },
-            {
-                "check": false,
-                "id": "lr5r3p1br1hk8tvgk0n",
-                "house_number": "3",
-                "purok": "3",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "ELIJA",
-                "mname": "",
-                "lname": "GRINO",
-                "suffix": "",
-                "gender": "",
-                "mark": "Undecided",
-                "status": "",
-                "isHead": "TRUE"
-            },
-            {
-                "check": false,
-                "id": "lr5r3p1bot0a8ao6yz",
-                "house_number": "3",
-                "purok": "3",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "NILO",
-                "mname": "",
-                "lname": "GURAN",
-                "suffix": "",
-                "gender": "",
-                "mark": "Right",
-                "status": "",
-                "isHead": "TRUE"
-            },
-            {
-                "check": false,
-                "id": "lr5r3p1b56bees99l2i",
-                "house_number": "3",
-                "purok": "3",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "JOVELYN",
-                "mname": "",
-                "lname": "COSINO",
-                "suffix": "",
-                "gender": "",
-                "mark": "Right",
-                "status": "",
-                "isHead": ""
-            },
-            {
-                "check": false,
-                "id": "lr5r3p1bffxi7q5a2i",
-                "house_number": "1",
-                "purok": "4",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "NEIL MARK",
-                "mname": "",
-                "lname": "GURAN",
-                "suffix": "",
-                "gender": "",
-                "mark": "Left",
-                "status": "",
-                "isHead": ""
-            },
-            {
-                "check": false,
-                "id": "lr5r3p1b2mfwpx8fu8s",
-                "house_number": "1",
-                "purok": "4",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "JOHN PUAL",
-                "mname": "",
-                "lname": "GURAN",
-                "suffix": "",
-                "gender": "",
-                "mark": "Left",
-                "status": "",
-                "isHead": ""
-            },
-            {
-                "check": false,
-                "id": "lr5r3p1cp4cbgommdi",
-                "house_number": "1",
-                "purok": "4",
-                "barangay": "Brgy 1",
-                "municipality": "Irosin",
-                "city": "SORSOGON",
-                "fname": "JUDIT",
-                "mname": "",
-                "lname": "GURAN",
-                "suffix": "",
-                "gender": "",
-                "mark": "Left",
-                "status": "",
-                "isHead": ""
-            }
-        ],
+        voters: [],
         imported_voters: [],
         city: ["Sorsogon"],
         municipalities: [
@@ -607,13 +155,22 @@ const store = createStore({
             barangay: "all",
             purok: "all",
             chart: {
+                total: {
+                    voters: 0,
+                    leader: 0,
+                    right: 0,
+                    left: 0,
+                    undecided: 0,
+                    unmarked: 0
+                },
                 bar: {
                     data: {
-                        labels: ["Barangay 1", "Barangay 1", "Barangay 1", "Barangay 1"],
+                        labels: [],
                         datasets: [
-                            { data: [40, 20, 10, 40], backgroundColor: 'lime', label: 'Right'},
-                            { data: [10, 30, 60, 40], backgroundColor: 'red', label: 'Left'},
-                            { data: [20, 20, 0, 5], backgroundColor: 'gray', label: 'Undicided'}
+                            { data: [], backgroundColor: 'lime', label: 'Right'},
+                            { data: [], backgroundColor: 'red', label: 'Left'},
+                            { data: [], backgroundColor: 'gray', label: 'Undicided'},
+                            { data: [], backgroundColor: 'lightgray', label: 'Unmarked'}
                         ]
                     },
                     options: {
@@ -639,7 +196,8 @@ const store = createStore({
                         //         });
                         //     }
                         // }
-                    }
+                    },
+                    chartdata: []
                 }
             }
         },
@@ -686,7 +244,7 @@ const store = createStore({
             }
 
             if(state.filter.show.house_head){
-                list = list.filter(v=> v.isHead)
+                list = list.filter(v=> v.ishead)
             }
             
             list = list.filter(v => {
@@ -711,6 +269,9 @@ const store = createStore({
                 e2 = 0
             }
             state.filter.showing = (start + 1) + " - " + e2
+
+            if(start > state.filter.total_item) state.filter.current_page = 1
+
             return list.slice(start, end)
         },
         get_selected_voters (state){
@@ -785,7 +346,7 @@ const store = createStore({
                 })
             }
             if(state.filter2.show.house_head){
-                list = list.filter(v=> v.isHead)
+                list = list.filter(v=> v.ishead)
             }
 
             list = list.filter(v => {
@@ -855,7 +416,7 @@ const store = createStore({
                 if(obj.city.toLowerCase() == state.house_filter.city.toLowerCase()){
                     return obj.municipality
                 }
-            }))];
+            }))].filter(l => l !== undefined);
         },
         get_brgy_houses (state) {
             return [...new Set( state.voters.map(obj => {
@@ -863,7 +424,7 @@ const store = createStore({
                 obj.municipality.toLowerCase() == state.house_filter.municipality.toLowerCase()){
                     return obj.barangay
                 }
-            }))];
+            }))].filter(l => l !== undefined);
         },
         get_purok_houses (state) {
             return [...new Set( state.voters.map(obj => {
@@ -872,7 +433,7 @@ const store = createStore({
                 obj.barangay.toLowerCase() == state.house_filter.barangay.toLowerCase()){
                     return obj.purok
                 }
-            }))];
+            }))].filter(l => l !== undefined);
         },
         get_house_houses (state) {
             var list = [...new Set(state.voters.map(obj => {
@@ -882,11 +443,11 @@ const store = createStore({
                 obj.purok.toLowerCase() == state.house_filter.purok.toLowerCase()){
                     return obj
                 }
-            }))];
+            }))].filter(l => l !== undefined);
             list = list.filter(v => v != undefined)
             if (list[0] == undefined) return []
             //var list3 = [...new Set(list.map(v => { return v.house_number }))]
-            var list2 = list.filter(v => v.isHead )
+            var list2 = list.filter(v => v.ishead )
             return [...new Set(list2.map(o => {
                 return {
                     check: false,
@@ -894,7 +455,7 @@ const store = createStore({
                     hh: o.fname + ' ' + o.mname + ' ' + o.lname,
                     hm: list.filter(v => v.house_number ==  o.house_number).length
                 }
-            }))]
+            }))].filter(l => l !== undefined);
         },
         check_house_add_member(state){
             if(state.house_filter.city != "" &&
@@ -916,7 +477,7 @@ const store = createStore({
                     if(obj.city.toLowerCase() == city.toLowerCase()){
                         return obj.municipality
                     }
-                }))];
+                }))].filter(l => l !== undefined);
             }
         },
         get_barangay_2 (state) {
@@ -926,7 +487,7 @@ const store = createStore({
                     obj.municipality.toLowerCase() == municipality.toLowerCase()){
                         return obj.barangay
                     }
-                }))];
+                }))].filter(l => l !== undefined);
             }
         },
         get_purok_2 (state) {
@@ -937,7 +498,19 @@ const store = createStore({
                     obj.barangay.toLowerCase() == barangay.toLowerCase()){
                         return obj.purok
                     }
-                }))];
+                }))].filter(l => l !== undefined);
+            }
+        },
+        get_house_number_2 (state) {
+            return (city, municipality, barangay, purok) => {
+                return [...new Set( state.voters.map(obj => {
+                    if(obj.city.toLowerCase() == city.toLowerCase() &&
+                    obj.municipality.toLowerCase() == municipality.toLowerCase() &&
+                    obj.barangay.toLowerCase() == barangay.toLowerCase() &&
+                    obj.purok.toString().toLowerCase() == purok.toString().toLowerCase()){
+                        return obj.house_number
+                    }
+                }))].filter(l => l !== undefined);
             }
         },
         get_house_member (state) {
@@ -953,169 +526,6 @@ const store = createStore({
         },
         // #endregion
         // #region reports
-        get_bar_chart_report_data (state) {
-            let labels = []
-            let datasets = [
-                { data: [], backgroundColor: 'lime', label: 'Right'},
-                { data: [], backgroundColor: 'red', label: 'Left'},
-                { data: [], backgroundColor: 'gray', label: 'Undecided'}
-            ]
-            //all
-            if(state.report_filter.city == "all"){
-                labels = [...new Set( state.voters.map(obj => {
-                    return obj.city
-                }))];
-                labels.forEach(l => {
-                    var right = state.voters.filter(v => v.city.toLowerCase() == l.toLowerCase() && (v.mark.toLowerCase() == 'right' || v.mark.toLowerCase() == 'leader')).length
-                    var left = state.voters.filter(v => v.city.toLowerCase() == l.toLowerCase() && (v.mark.toLowerCase() == 'left')).length                   
-                    var undecided = state.voters.filter(v => v.city.toLowerCase() == l.toLowerCase() && (v.mark.toLowerCase() == 'undecided')).length
-                    datasets[0].data.push(right)
-                    datasets[1].data.push(left)
-                    datasets[2].data.push(undecided)
-                })
-            }
-            //all in city
-            if(state.report_filter.city !== 'all' && state.report_filter.municipality == 'all'){
-                labels = [...new Set( state.voters.map(obj => {
-                    if(obj.city.toLowerCase() == state.report_filter.city.toLowerCase()){
-                        return obj.municipality
-                    }
-                }))];
-                
-                labels.forEach(l => {
-                    var right = state.voters.filter(v => {
-                        if(v.city.toLowerCase() == state.report_filter.city.toLowerCase() && v.municipality.toLowerCase() == l.toLowerCase()){
-                            if(v.mark.toLowerCase() == 'right' || v.mark.toLowerCase() == 'leader') return true
-                        }
-                    }).length
-                    var left = state.voters.filter(v => {
-                        if(v.city.toLowerCase() == state.report_filter.city.toLowerCase() && v.municipality.toLowerCase() == l.toLowerCase()){
-                            if(v.mark.toLowerCase() == 'left') return true
-                        }
-                    }).length                   
-                    var undecided = state.voters.filter(v => {
-                        if(v.city.toLowerCase() == state.report_filter.city.toLowerCase() && v.municipality.toLowerCase() == l.toLowerCase()){
-                            if(v.mark.toLowerCase() == 'undecided') return true
-                        }
-                    }).length
-                    datasets[0].data.push(right)
-                    datasets[1].data.push(left)
-                    datasets[2].data.push(undecided)
-                    console.log(l, right, left, undecided)
-                })
-            }
-            //all in municipality
-            if(state.report_filter.city !== 'all' && state.report_filter.municipality !== 'all' && state.report_filter.barangay == 'all'){
-                labels = [...new Set( state.voters.map(obj => {
-                    if(obj.city.toLowerCase() == state.report_filter.city.toLowerCase() &&
-                    obj.municipality.toLowerCase() == state.report_filter.municipality.toLowerCase()){
-                        return obj.barangay
-                    }
-                }))];
-                
-                labels.forEach(l => {
-                    var right = state.voters.filter(v => {
-                        if(v.city.toLowerCase() == state.report_filter.city.toLowerCase() && v.municipality.toLowerCase() == state.report_filter.municipality.toLowerCase() && v.barangay.toLowerCase() == l.toLowerCase()){
-                            if(v.mark.toLowerCase() == 'right' || v.mark.toLowerCase() == 'leader') return true
-                        }
-                    }).length
-                    var left = state.voters.filter(v => {
-                        if(v.city.toLowerCase() == state.report_filter.city.toLowerCase() && v.municipality.toLowerCase() == state.report_filter.municipality.toLowerCase() && v.barangay.toLowerCase() == l.toLowerCase()){
-                            if(v.mark.toLowerCase() == 'left') return true
-                        }
-                    }).length                   
-                    var undecided = state.voters.filter(v => {
-                        if(v.city.toLowerCase() == state.report_filter.city.toLowerCase() && v.municipality.toLowerCase() == state.report_filter.municipality.toLowerCase() && v.barangay.toLowerCase() == l.toLowerCase()){
-                            if(v.mark.toLowerCase() == 'undecided') return true
-                        }
-                    }).length
-                    datasets[0].data.push(right)
-                    datasets[1].data.push(left)
-                    datasets[2].data.push(undecided)
-                    console.log(l, right, left, undecided)
-                })
-            }
-            //all in barangay
-            if(state.report_filter.city !== 'all' && state.report_filter.municipality !== 'all' && state.report_filter.barangay !== 'all' && state.report_filter.purok == 'all'){
-                labels = [...new Set( state.voters.map(obj => {
-                    if(obj.city.toLowerCase() == state.report_filter.city.toLowerCase() &&
-                    obj.municipality.toLowerCase() == state.report_filter.municipality.toLowerCase() &&
-                    obj.barangay.toLowerCase() == state.report_filter.barangay.toLowerCase()){
-                        return obj.purok
-                    }
-                }))];
-                
-                labels.forEach(l => {
-                    var right = state.voters.filter(v => {
-                        if(v.city.toLowerCase() == state.report_filter.city.toLowerCase() && v.municipality.toLowerCase() == state.report_filter.municipality.toLowerCase() && v.barangay.toLowerCase() == state.report_filter.barangay.toLowerCase() && v.purok.toLowerCase() == l.toLowerCase()){
-                            if(v.mark.toLowerCase() == 'right' || v.mark.toLowerCase() == 'leader') return true
-                        }
-                    }).length
-                    var left = state.voters.filter(v => {
-                        if(v.city.toLowerCase() == state.report_filter.city.toLowerCase() && v.municipality.toLowerCase() == state.report_filter.municipality.toLowerCase() && v.barangay.toLowerCase() == state.report_filter.barangay.toLowerCase() && v.purok.toLowerCase() == l.toLowerCase()){
-                            if(v.mark.toLowerCase() == 'left') return true
-                        }
-                    }).length                   
-                    var undecided = state.voters.filter(v => {
-                        if(v.city.toLowerCase() == state.report_filter.city.toLowerCase() && v.municipality.toLowerCase() == state.report_filter.municipality.toLowerCase() && v.barangay.toLowerCase() == state.report_filter.barangay.toLowerCase() && v.purok.toLowerCase() == l.toLowerCase()){
-                            if(v.mark.toLowerCase() == 'undecided') return true
-                        }
-                    }).length
-                    datasets[0].data.push(right)
-                    datasets[1].data.push(left)
-                    datasets[2].data.push(undecided)
-                    console.log(l, right, left, undecided)
-                })
-
-                labels = [...new Set(labels.map(l => {
-                    return "Purok " + l
-                }))]
-            }
-            //all in purok
-            if(state.report_filter.city !== 'all' && state.report_filter.municipality !== 'all' && state.report_filter.barangay !== 'all' && state.report_filter.purok !== 'all'){
-                labels = [...new Set( state.voters.map(obj => {
-                    if(obj.city.toLowerCase() == state.report_filter.city.toLowerCase() &&
-                    obj.municipality.toLowerCase() == state.report_filter.municipality.toLowerCase() &&
-                    obj.barangay.toLowerCase() == state.report_filter.barangay.toLowerCase() &&
-                    obj.purok.toLowerCase() == state.report_filter.purok.toLowerCase()){
-                        return obj.purok
-                    }
-                }))].filter(l => l !== undefined);
-                
-                labels.forEach(l => {
-                    console.log(labels, l)
-                    var right = state.voters.filter(v => {
-                        if(v.city.toLowerCase() == state.report_filter.city.toLowerCase() && v.municipality.toLowerCase() == state.report_filter.municipality.toLowerCase() && v.barangay.toLowerCase() == state.report_filter.barangay.toLowerCase() && v.purok.toLowerCase() == l){
-                            if(v.mark.toLowerCase() == 'right' || v.mark.toLowerCase() == 'leader') return true
-                        }
-                    }).length
-                    var left = state.voters.filter(v => {
-                        if(v.city.toLowerCase() == state.report_filter.city.toLowerCase() && v.municipality.toLowerCase() == state.report_filter.municipality.toLowerCase() && v.barangay.toLowerCase() == state.report_filter.barangay.toLowerCase() && v.purok.toLowerCase() == l){
-                            if(v.mark.toLowerCase() == 'left') return true
-                        }
-                    }).length                   
-                    var undecided = state.voters.filter(v => {
-                        if(v.city.toLowerCase() == state.report_filter.city.toLowerCase() && v.municipality.toLowerCase() == state.report_filter.municipality.toLowerCase() && v.barangay.toLowerCase() == state.report_filter.barangay.toLowerCase() && v.purok.toLowerCase() == l){
-                            if(v.mark.toLowerCase() == 'undecided') return true
-                        }
-                    }).length
-                    datasets[0].data.push(right)
-                    datasets[1].data.push(left)
-                    datasets[2].data.push(undecided)
-        
-                    console.log(l, right, left, undecided)
-                })
-
-                labels = [...new Set(labels.map(l => {
-                    return "Purok " + l
-                }))]
-            }
-            
-            return {
-                labels: labels,
-                datasets: datasets
-            }
-        },
         get_total_report (state) {
             var right = state.voters.filter(v => v.mark.toLowerCase() == 'right' || v.mark.toLowerCase() == 'leader').length
             var left = state.voters.filter(v => v.mark.toLowerCase() == 'left').length                   
@@ -1126,9 +536,10 @@ const store = createStore({
                 undecided: undecided
             }
         },
+        get_report_location (state) {
+            
+        }
         // #endregion
-
-
     },
     mutations: {
         loadLocalState () {
@@ -1143,12 +554,24 @@ const store = createStore({
             }
         },
         store (state) {
-            console.log(state)
+            return
             localStorage.setItem('store', JSON.stringify(state))
         },
     },
     actions: {
-        
+        async load_voters ({state}) {
+            let totalPage = 0
+            let total_item = 0
+            let next_page = "/voters?page=1"
+            while (next_page) {
+                await axios.get(next_page)
+                .then((res) => {
+                    state.filter.total_item = res.data.total
+                    next_page = res.data.next_page_url
+                    state.voters = state.voters.concat(res.data.data)
+                })
+            }
+        },
         // #region voters
         clearBrgySelected ({state, commit}){
             state.filter.barangay = "all"
@@ -1184,13 +607,26 @@ const store = createStore({
             });
             commit('store')
         },
-        markVoters ({state, commit}, data) {
-            data.voters.forEach(v => {
-                let find = state.voters.findIndex(v1 => v1.id == v.id)
-                if(find != -1) {
-                    state.voters[find].mark = data.type.toUpperCase()
-                }
-            });
+        async markVoters({ state, commit }, data) {
+            console.log(data)
+            const configHeaders = {
+                "content-type": "application/json",
+                "Accept": "application/json"
+                };
+            await axios.post('/voters/mark-selected', { 'voters': JSON.stringify(data.voters), 'markas': data.type }, configHeaders)
+                .then((res) => {
+                    console.log(res)
+                    data.voters.forEach(v => {
+                        let find = state.voters.findIndex(v1 => v1.id == v.id)
+                        if (find != -1) {
+                            state.voters[find].mark = data.type.toUpperCase()
+                        }
+                    });
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+
             commit('store')
         },
         setSelectedHouseNumber ({state, commit}, hn){
@@ -1294,7 +730,7 @@ const store = createStore({
                 "gender": data.gender,
                 "mark": "",
                 "status": "",
-                "isHead": false
+                "ishead": false
             }
             state.voters.push(v)
             commit('store')
@@ -1306,7 +742,7 @@ const store = createStore({
         // #endregion
 
         // #region Report
-        reportReset ({state, commit}) {
+        reportReset ({state, commit, dispatch}) {
             if(state.report_filter.city == 'all'){
                 state.report_filter.municipality = 'all'
                 state.report_filter.barangay = 'all'
@@ -1320,6 +756,45 @@ const store = createStore({
                 state.report_filter.purok = 'all'
             }
             commit('store')
+            dispatch('get_bar_chart_report_data')
+        },
+        async get_bar_chart_report_data ({state}) {
+            let labels = []
+            let datasets = [
+                { data: [], backgroundColor: 'lime', label: 'Right'},
+                { data: [], backgroundColor: 'red', label: 'Left'},
+                { data: [], backgroundColor: 'gray', label: 'Undecided'},
+                { data: [], backgroundColor: 'lightgray', label: 'Unmarked'}
+            ]
+            
+            await axios.post('/voters/bar-chart', {
+                "city": state.report_filter.city,
+                "municipality": state.report_filter.municipality,
+                "barangay": state.report_filter.barangay,
+                "purok": state.report_filter.purok,
+                "house_number": state.report_filter.house_number,
+            })
+            .then((res) => {
+                console.log(res.data)
+                if(!res.data.labels) return
+                labels = [...new Set(res.data.labels.map(l => {
+                    if(state.report_filter.barangay !== 'all' && state.report_filter.purok == 'all') return "Purok " + l.label
+                    else return l.label
+                }))].filter(l=> l !== undefined)
+                console.log(labels)
+                datasets[0].data = res.data.datasets.right
+                datasets[1].data = res.data.datasets.left
+                datasets[2].data = res.data.datasets.undecided
+                datasets[3].data = res.data.datasets.none
+                state.report_filter.chart.bar.data = {
+                    labels: labels,
+                    datasets: datasets
+                }
+
+                state.report_filter.chart.total = res.data.total
+
+            })
+
         },
 
         // #endregion

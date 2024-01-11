@@ -6,7 +6,7 @@
                     <div class="w-100 d-flex justify-content-between ms-2">
                         <div class="d-flex gap-3 flex-wrap">
                             <div class="form-group">
-                                <label for="exampleFormControlSelect11">City</label>
+                                <label for="exampleFormControlSelect11">Select City</label>
                                 <select v-on:change="onSelectMinucipality" v-model="store.state.filter.city"
                                     class="form-control input-sm" id="exampleFormControlSelect1">
                                     <option value="" selected disabled>Choose City</option>
@@ -20,7 +20,7 @@
                                     class="form-control input-sm" id="exampleFormControlSelect1">
                                     <option value=""  disabled>Choose municipality</option>
                                     <option value="all" selected>All</option>
-                                    <template v-for="(municipality, i) in store.getters.get_municipality">
+                                    <template v-for="(municipality, i) in store.getters.get_municipality_2(store.state.filter.city)">
                                         <option v-if="i == 0" :value="municipality" selected>{{ municipality }}
                                         </option>
                                         <option v-else :value="municipality">{{ municipality }}</option>
@@ -33,7 +33,7 @@
                                     class="form-control" id="exampleFormControlSelect1">
                                     <option value="" disabled>Choose barangay</option>
                                     <option value="all" selected>All</option>
-                                    <template v-for="(brgy, i) in store.getters.get_brgy">
+                                    <template v-for="(brgy, i) in store.getters.get_barangay_2(store.state.filter.city, store.state.filter.municipality)">
                                         <option :value="brgy"> {{ brgy }}</option>
                                     </template>
                                 </select>
@@ -43,7 +43,7 @@
                                 <select v-model="store.state.filter.purok" class="form-control"
                                     id="exampleFormControlSelect1">
                                     <option value="all" selected>All</option>
-                                    <template v-for="i in store.getters.get_purok">
+                                    <template v-for="i in store.getters.get_purok_2(store.state.filter.city, store.state.filter.municipality, store.state.filter.barangay)">
                                         <option :value="i">Purok {{ i }}</option>
                                     </template>
                                 </select>
@@ -54,7 +54,7 @@
                                 <select v-on:change="onSelectHouseNo" v-model="store.state.filter.house_number"
                                     class="form-control" id="exampleFormControlSelect1">
                                     <option value="all" selected>All</option>
-                                    <template v-for="i in store.getters.get_house_number">
+                                    <template v-for="i in store.getters.get_house_number_2(store.state.filter.city, store.state.filter.municipality, store.state.filter.barangay, store.state.filter.purok)">
                                         <option :value="i">{{ i }}</option>
                                     </template>
                                 </select>
@@ -62,10 +62,6 @@
 
 
                         </div>
-                        <!-- <div class="d-flex gap-1">
-                                        <input type="text" class="form-control" placeholder="Search first, last and middle name" style="height: 31px; min-width: 400px;">
-                                        <a class="btn btn-sm btn-secondary">Search</a>
-                                    </div>d -->
                     </div>
                 </div>
             </div>
@@ -86,44 +82,63 @@
                 <!-- <span class="p-3">Filter :</span> -->
                 <div class="w-100 d-flex justify-content-between">
                     <div class="d-flex gap-3 flex-wrap">
-                        <div class="form-group" style="min-width: 200px;">
-                            <label for="exampleFormControlSelect1">Municipality</label>
-                            <select v-on:change="onSelectMinucipality" v-model="store.state.filter.municipality"
-                                class="form-control" id="exampleFormControlSelect1">
-                                <template v-for="(municipality, i) in store.state.municipalities">
-                                    <template>
-                                        <span>{{ i++ }}</span>
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect11">Select City</label>
+                                <select v-on:change="onSelectMinucipality" v-model="store.state.filter.city"
+                                    class="form-control input-sm" id="exampleFormControlSelect1">
+                                    <option value="" selected disabled>Choose City</option>
+                                    <option value="all" selected>All</option>
+                                    <option v-for="c in store.getters.get_city" :value="c">{{ c }}</option>
+                                </select>
+                            </div>
+                            <div v-if="store.state.filter.city != 'all'" class="form-group">
+                                <label for="exampleFormControlSelect1">Municipality</label>
+                                <select v-on:change="onSelectMinucipality" v-model="store.state.filter.municipality"
+                                    class="form-control input-sm" id="exampleFormControlSelect1">
+                                    <option value=""  disabled>Choose municipality</option>
+                                    <option value="all" selected>All</option>
+                                    <template v-for="(municipality, i) in store.getters.get_municipality_2(store.state.filter.city)">
+                                        <option v-if="i == 0" :value="municipality" selected>{{ municipality }}
+                                        </option>
+                                        <option v-else :value="municipality">{{ municipality }}</option>
                                     </template>
-                                    <option v-if="i == 0" :value="municipality" selected>{{ municipality.name }}</option>
-                                    <option v-else :value="municipality">{{ municipality.name }}</option>
-                                </template>
-                            </select>
-                        </div>
-                        <div class="form-group" style="min-width: 200px;">
-                            <label for="exampleFormControlSelect1">Barangay</label>
-                            <select v-on:change="onSelectBrgy" v-model="store.state.filter.barangay" class="form-control"
-                                id="exampleFormControlSelect1">
-                                <option value="" selected disabled>Choose barangay</option>
-                                <template v-for="(brgy, i) in store.state.filter.municipality.brgy">
-                                    <option :value="brgy"> {{ brgy.name }}</option>
-                                </template>
-                            </select>
-                        </div>
-                        <div v-if="store.state.filter.barangay" class="form-group" style="min-width: 200px;">
-                            <label for="exampleFormControlSelect1">Purok</label>
-                            <select v-model="store.state.filter.purok" class="form-control" id="exampleFormControlSelect1">
-                                <option value="all" selected>All</option>
-                                <template v-for="i in store.state.filter.barangay.purok">
-                                    <option :value="i">Purok {{ i }}</option>
-                                </template>
-                            </select>
-                        </div>
+                                </select>
+                            </div>
+                            <div v-if="store.state.filter.municipality != 'all'" class="form-group">
+                                <label for="exampleFormControlSelect1">Barangay</label>
+                                <select v-on:change="onSelectBrgy" v-model="store.state.filter.barangay"
+                                    class="form-control" id="exampleFormControlSelect1">
+                                    <option value="" disabled>Choose barangay</option>
+                                    <option value="all" selected>All</option>
+                                    <template v-for="(brgy, i) in store.getters.get_barangay_2(store.state.filter.city, store.state.filter.municipality)">
+                                        <option :value="brgy"> {{ brgy }}</option>
+                                    </template>
+                                </select>
+                            </div>
+                            <div v-if="store.state.filter.barangay != 'all'" class="form-group">
+                                <label for="exampleFormControlSelect1">Purok</label>
+                                <select v-model="store.state.filter.purok" class="form-control"
+                                    id="exampleFormControlSelect1">
+                                    <option value="all" selected>All</option>
+                                    <template v-for="i in store.getters.get_purok_2(store.state.filter.city, store.state.filter.municipality, store.state.filter.barangay)">
+                                        <option :value="i">Purok {{ i }}</option>
+                                    </template>
+                                </select>
+                            </div>
 
-                    </div>
-                    <!-- <div class="d-flex gap-1">
-                                        <input type="text" class="form-control" placeholder="Search first, last and middle name" style="height: 31px; min-width: 400px;">
-                                        <a class="btn btn-sm btn-secondary">Search</a>
-                                    </div>d -->
+                            <div v-if="store.state.filter.purok != 'all'" class="form-group">
+                                <label for="exampleFormControlSelect1">House No.</label>
+                                <select v-on:change="onSelectHouseNo" v-model="store.state.filter.house_number"
+                                    class="form-control" id="exampleFormControlSelect1">
+                                    <option value="all" selected>All</option>
+                                    <template v-for="i in store.getters.get_house_number_2(store.state.filter.city, store.state.filter.municipality, store.state.filter.barangay, store.state.filter.purok)">
+                                        <option :value="i">{{ i }}</option>
+                                    </template>
+                                </select>
+                            </div>
+
+
+                        </div>
                 </div>
             </div>
             <div class="w-100 d-flex justify-content-between mt-4">
