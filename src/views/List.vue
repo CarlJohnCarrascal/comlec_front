@@ -80,7 +80,7 @@
                             </tr>
                         </thead>
                         <tbody class=" border">
-                            <tr v-for="(record, i = 1) in store.getters.get_voters">
+                            <tr v-for="(record, i = 1) in store.state.voters2.data">
                                 <td>
                                     <input v-model="record.check" class="voters-check" type="checkbox" :id="'voters-' + i" :data-id="record.id">
                                 </td>
@@ -114,14 +114,14 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr class="d-nones py-2" v-if="store.state.voters.length <= 0">
+                            <tr class="d-nones py-2" v-if="store.state.voters2.total <= 0">
                                 <td colspan="15" class="text-center fw-bold py-2" style="font-size: xx-small;">No Record Found</td>
                             </tr>
-                            <tr class="border-none user-select-none" role="button">
-                                <td colspan="5"> Showing {{ store.state.filter.showing }} of 
-                                    <span class="fw-bolds">{{ store.state.filter.total_item }} </span> 
+                            <tr  v-if="store.state.voters2.from" class="border-none user-select-none" role="button">
+                                <td colspan="5"> Showing {{ store.state.voters2.from + '-' + store.state.voters2.to }} of 
+                                    <span class="fw-bolds">{{ store.state.voters2.total }} </span> 
                                     item, 
-                                    <span v-if="store.state.filter.total_item > 0" class="fw-bolds">{{ store.state.filter.total_page }} </span>
+                                    <span v-if="store.state.voters2.total > 0" class="fw-bolds">{{ store.state.voters2.last_page }} </span>
                                     <span v-else class="fw-bolds">0 </span>
                                     page's 
                                 </td>
@@ -129,27 +129,39 @@
                                     <div class="row m-0 p-0">
                                         <nav aria-label="Page navigation example" class="text-end mt-2">
                                         <ul class="pagination pagination-sm float-end mb-2">
-                                            <li class="page-item">
-                                                <a v-on:click="store.dispatch('nextPage', -1)" v-if="store.state.filter.current_page > 1" class="page-link" aria-label="Previous">
-                                                    <span aria-hidden="true">&laquo;</span>
-                                                    <!-- <span class="sr-only">Previous</span> -->
-                                                </a>
-                                                <a v-else class="page-link disabled" aria-label="Previous">
-                                                    <span aria-hidden="true">&laquo;</span>
-                                                    <!-- <span class="sr-only">Next</span> -->
-                                                </a>
-                                            </li>
-                                            <li class="page-item"><a class="page-link">{{ store.state.filter.current_page }} </a></li>
-                                            <li class="page-item">
-                                                <a v-on:click="store.dispatch('nextPage', 1)" v-if="store.state.filter.current_page < store.state.filter.total_page" class="page-link" aria-label="Next">
-                                                    <span aria-hidden="true">&raquo;</span>
-                                                    <!-- <span class="sr-only">Next</span> -->
-                                                </a>
-                                                <a v-else class="page-link disabled" aria-label="Next">
-                                                    <span aria-hidden="true">&raquo;</span>
-                                                    <!-- <span class="sr-only">Next</span> -->
-                                                </a>
-                                            </li>
+                                            <template v-for="link in store.state.voters2.links">
+                                                <li v-if="link.url == null" class="page-item">
+                                                    <a v-if="link.label == '...'" class="page-link disabled">
+                                                        <span aria-hidden="true">{{ link.label }}</span>
+                                                    </a>
+                                                    <a v-if="link.label.includes('Previous')" class="page-link disabled">
+                                                        <span aria-hidden="true">Previous</span>
+                                                    </a>
+                                                    <a v-if="link.label.includes('Next')" class="page-link disabled">
+                                                        <span aria-hidden="true">Previous</span>
+                                                    </a>
+                                                </li>
+                                                <li v-else class="page-item">
+                                                    <template v-if="link.label.includes('Previous')">
+                                                        <a v-on:click="store.dispatch('nextPage', link.url)" class="page-link">
+                                                            <span aria-hidden="true">Previous</span>
+                                                        </a>
+                                                    </template>
+                                                    <template v-else-if="link.label.includes('Next')">
+                                                        <a v-on:click="store.dispatch('nextPage', link.url)" class="page-link">
+                                                            <span aria-hidden="true">Next</span>
+                                                        </a>
+                                                    </template>
+                                                    <template v-else>
+                                                        <a v-if="link.active" v-on:click="store.dispatch('nextPage', link.url)" class="page-link active">
+                                                            <span aria-hidden="true">{{ link.label }}</span>
+                                                        </a>
+                                                        <a v-else v-on:click="store.dispatch('nextPage', link.url)" class="page-link">
+                                                            <span aria-hidden="true">{{ link.label }}</span>
+                                                        </a>
+                                                    </template>
+                                                </li>
+                                            </template>
                                         </ul>
                                     </nav>
                                     </div>

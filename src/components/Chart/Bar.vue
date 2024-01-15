@@ -1,5 +1,5 @@
 <template>
-    <div class="w-100" style="min-height: 300px;">
+    <div class="w-100" style="min-height: 300px; max-height: 600px;">
         <Bar class="w-100" id="my-bar-chart-id" 
         :data="store.state.report_filter.chart.bar.data" 
         :options="store.state.report_filter.chart.bar.options" />

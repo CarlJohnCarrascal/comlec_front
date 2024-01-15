@@ -10,7 +10,8 @@ onMounted( async ()=>{
   await router.isReady()
   let r = router.currentRoute.value.meta.btn
   onMenuClick(r)
-  store.commit('loadLocalState')
+  //store.commit('loadLocalState')
+  store.dispatch('get_city')
   store.dispatch('load_voters')
 })
 

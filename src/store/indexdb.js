@@ -5,6 +5,8 @@ import axios from 'axios'
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 let hostname = location.origin + "/api/";
 hostname = "http://127.0.0.1:8000/api/";
+//hostname = "https://fs58559m-8000.asse.devtunnels.ms/api/"
+//hostname = "https://www.cajsen.online/api/"
 
 axios.defaults.baseURL = hostname;
 const store = createStore({
@@ -18,6 +20,7 @@ const store = createStore({
             }
         },
         filter: {
+            region: "V",
             city: "all",
             municipality: "all",
             barangay: "all",
@@ -36,6 +39,7 @@ const store = createStore({
                 right: true,
                 left: true,
                 undecided: true,
+                unmarked: true,
                 house_head: false
             },
         },
@@ -70,66 +74,14 @@ const store = createStore({
             }
         },
         voters: [],
+        voters2: [],
         imported_voters: [],
-        city: ["Sorsogon"],
-        municipalities: [
-            {
-                name:"Bacon",
-                brgy:[
-                    {name: "Brgy 1", purok: 10},
-                    {name: "Brgy 2", purok: 5},
-                    {name: "Brgy 3", purok: 7},
-                    {name: "Brgy 4", purok: 10},
-                    {name: "Brgy 5", purok: 14},
-                    {name: "Brgy 6", purok: 9},
-                ]
-            },
-            {
-                name:"Barcelona",
-                brgy:[
-                    {name: "Brgy 1", purok: 10},
-                    {name: "Brgy 2", purok: 5},
-                    {name: "Brgy 3", purok: 7},
-                    {name: "Brgy 4", purok: 10},
-                    {name: "Brgy 5", purok: 14},
-                    {name: "Brgy 6", purok: 9},
-                ]
-            },
-            {
-                name:"Bulan",
-                brgy:[
-                    {name: "Brgy 1", purok: 10},
-                    {name: "Brgy 2", purok: 5},
-                    {name: "Brgy 3", purok: 7},
-                    {name: "Brgy 4", purok: 10},
-                    {name: "Brgy 5", purok: 14},
-                    {name: "Brgy 6", purok: 9},
-                ]
-            },
-            {
-                name:"Bulusan",
-                brgy:[
-                    {name: "Brgy 1", purok: 10},
-                    {name: "Brgy 2", purok: 5},
-                    {name: "Brgy 3", purok: 7},
-                    {name: "Brgy 4", purok: 10},
-                    {name: "Brgy 5", purok: 14},
-                    {name: "Brgy 6", purok: 9},
-                ]
-            },
-            {
-                name:"Irosin",
-                brgy:[
-                    {name: "Brgy 1", purok: 10},
-                    {name: "Brgy 2", purok: 5},
-                    {name: "Brgy 3", purok: 7},
-                    {name: "Brgy 4", purok: 10},
-                    {name: "Brgy 5", purok: 14},
-                    {name: "Brgy 6", purok: 9},
-                ]
-            },
-        ],
+        cities: [],
+        municipalities: [],
+        barangay: [],
+        purok: [],
         houses: [],
+        houses2: [],
         house_filter: {
             city: "",
             municipality: "",
@@ -150,6 +102,13 @@ const store = createStore({
             house_number: ""
         },
         report_filter: {
+            list: {
+                cities: [],
+                municipalities: [],
+                barangay: [],
+                purok: [],
+                house_number: []
+            },
             city: "all",
             municipality: "all",
             barangay: "all",
@@ -164,13 +123,20 @@ const store = createStore({
                     unmarked: 0
                 },
                 bar: {
+                    total: {
+                        leader: 0,
+                        right: 0,
+                        left: 0,
+                        undecided: 0,
+                        unmarked: 0
+                    },
                     data: {
                         labels: [],
                         datasets: [
-                            { data: [], backgroundColor: 'lime', label: 'Right'},
-                            { data: [], backgroundColor: 'red', label: 'Left'},
-                            { data: [], backgroundColor: 'gray', label: 'Undicided'},
-                            { data: [], backgroundColor: 'lightgray', label: 'Unmarked'}
+                            { data: [], total: 0, backgroundColor: 'lime', label: 'Right'},
+                            { data: [], total: 0, backgroundColor: 'red', label: 'Left'},
+                            { data: [], total: 0, backgroundColor: 'gray', label: 'Undicided'},
+                            { data: [], total: 0, backgroundColor: 'lightgray', label: 'Unmarked'}
                         ]
                     },
                     options: {
@@ -236,7 +202,7 @@ const store = createStore({
                     if(!state.filter.show.undecided){
                         if(v.mark.toLowerCase() == "undecided") return false
                     }
-                    if(!state.filter.show.unmark){
+                    if(!state.filter.show.unmarked){
                         if(v.mark == "") return false
                     }
                     return true
@@ -277,20 +243,33 @@ const store = createStore({
         get_selected_voters (state){
             return []
         },
-        get_city (state){
-            return [...new Set( state.voters.map(obj => obj.city)) ];
+        async get_city (state){
+            //return [...new Set( state.voters.map(obj => obj.city)) ];
+            await axios.get('/cities?region='+ state.filter.region)
+            .then((res) => {
+                state.cities = res.data
+            })
         },
-        get_municipality (state){
-            return [...new Set( state.voters.map(obj => obj.municipality)) ];
+        async get_municipality (state){
+            //return [...new Set( state.voters.map(obj => obj.municipality)) ];
+            await axios.get('/municipalities?c_id' + state.filter.city)
+            .then((res) => {
+                state.municipalities = res.data
+            })
         },
-        get_brgy (state){
-            return [...new Set( state.voters.map(obj => {
-                if(obj.municipality.toLowerCase() == state.filter.municipality.toLowerCase()){
-                    return obj.barangay
-                }
-            })) ];
+        async get_brgy (state){
+            // return [...new Set( state.voters.map(obj => {
+            //     if(obj.municipality.toLowerCase() == state.filter.municipality.toLowerCase()){
+            //         return obj.barangay
+            //     }
+            // })) ];
+            await axios.get('/barangay?m_id=' + state.filter.municipality)
+            .then((res) => {
+                return res.data
+            })
         },
-        get_purok (state){
+        async get_purok (state){
+            return state.filter.barangay.purok
             return [...new Set( state.voters.map(obj => {
                 if(obj.municipality.toLowerCase() == state.filter.municipality.toLowerCase()){
                     if(obj.barangay.toLowerCase() == state.filter.barangay.toLowerCase()){
@@ -299,16 +278,26 @@ const store = createStore({
                 }
             })) ];
         },
-        get_house_number (state) {
-            return [...new Set( state.voters.map(obj => {
-                if(obj.municipality.toLowerCase() == state.filter.municipality.toLowerCase()){
-                    if(obj.barangay.toLowerCase() == state.filter.barangay.toLowerCase()){
-                        if(obj.purok.toLowerCase() == state.filter.purok.toLowerCase()){
-                            return obj.house_number
-                        }
-                    }
-                }
-            }))];
+        async get_house_number (state) {
+            // return [...new Set( state.voters.map(obj => {
+            //     if(obj.municipality.toLowerCase() == state.filter.municipality.toLowerCase()){
+            //         if(obj.barangay.toLowerCase() == state.filter.barangay.toLowerCase()){
+            //             if(obj.purok.toLowerCase() == state.filter.purok.toLowerCase()){
+            //                 return obj.house_number
+            //             }
+            //         }
+            //     }
+            // }))];
+            
+            await axios.get('/house',{
+                city: state.filter.city,
+                municipality: state.filter.municipality,
+                barangay: state.filter.barangay,
+                purok: state.filter.purok
+            })
+            .then((res) => {
+                return res.data
+            })
         },
         get_imported_voters (state){
             if(!state.filter2.municipality) return []
@@ -560,17 +549,87 @@ const store = createStore({
     },
     actions: {
         async load_voters ({state}) {
-            let totalPage = 0
-            let total_item = 0
-            let next_page = "/voters?page=1"
-            while (next_page) {
-                await axios.get(next_page)
+            await axios.get('/voters', { params: state.filter })
+            .then((res) => {
+                state.filter.total_item = res.data.total
+                state.voters2 = res.data
+            })
+        },
+        async get_city ({state}){
+            await axios.get('/cities?region='+ state.filter.region)
+            .then((res) => {
+                state.cities = res.data
+            })
+        },
+        async get_municipality ({state}){
+            state.filter.municipality = "all"
+            state.filter.barangay = "all"
+            state.filter.purok = "all"
+            state.filter.house_number = "all"
+            if(state.filter.city == 'all'){
+            }else {
+               await axios.get('/municipalities',{ params: { id: state.filter.city.id}})
                 .then((res) => {
-                    state.filter.total_item = res.data.total
-                    next_page = res.data.next_page_url
-                    state.voters = state.voters.concat(res.data.data)
+                    state.municipalities = res.data
                 })
             }
+        },
+        async get_brgy ({state}){
+            state.filter.barangay = "all"
+            state.filter.purok = "all"
+            state.filter.house_number = "all"
+            if(state.filter.municipality == 'all'){
+            }else {
+                await axios.get('/barangay', { params: { id: state.filter.municipality.id}})
+                .then((res) => {
+                    state.barangay = res.data
+                })
+            }
+        },
+        async get_purok ({state}){
+            state.filter.purok = "all"
+            state.filter.house_number = "all"
+            state.purok = state.filter.barangay.purok
+        },
+        async get_house_number ({state}) {
+                state.filter.house_number = "all"
+                await axios.get('/houses',{
+                params: {
+                    city: state.filter.city.id,
+                    municipality: state.filter.municipality.id,
+                    barangay: state.filter.barangay.id,
+                    purok: state.filter.purok
+                }
+            })
+            .then((res) => {
+                state.houses2 = res.data
+            })
+        },
+        onVoterAddressFilterChanged ({state, dispatch}, t) {
+            if(state.filter.city == 'all'){
+                state.filter.municipality = "all"
+                state.filter.barangay = "all"
+                state.filter.purok = "all"
+                state.filter.house_number = "all"
+            }
+            if(state.filter.municipality == 'all'){
+                state.filter.barangay = "all"
+                state.filter.purok = "all"
+                state.filter.house_number = "all"
+            }
+            if(state.filter.barangay == 'all'){
+                state.filter.purok = "all"
+                state.filter.house_number = "all"
+            }
+            if(state.filter.purok == 'all'){
+                state.filter.house_number = "all"
+            }
+            if(state.filter.city !== 'all' && t == 'city') dispatch('get_municipality')
+            if(state.filter.municipality !== 'all' && t == 'municipality') dispatch('get_brgy')
+            if(state.filter.barangay !== 'all' && t == 'brgy') dispatch('get_purok')
+            if(state.filter.purok !== 'all' && t == 'purok') dispatch('get_house_number')
+            
+            dispatch('load_voters')
         },
         // #region voters
         clearBrgySelected ({state, commit}){
@@ -640,8 +699,13 @@ const store = createStore({
             })
             commit('store')
         },
-        nextPage({state, commit}, i) {
-            state.filter.current_page += i
+        async nextPage({state, commit}, i) {
+            //state.filter.current_page += i
+            await axios.get(i, { params: state.filter })
+            .then((res) => {
+                state.filter.total_item = res.data.total
+                state.voters2 = res.data
+            })
             commit('store')
         },
         // #endregion
@@ -742,20 +806,23 @@ const store = createStore({
         // #endregion
 
         // #region Report
-        reportReset ({state, commit, dispatch}) {
-            if(state.report_filter.city == 'all'){
-                state.report_filter.municipality = 'all'
-                state.report_filter.barangay = 'all'
-                state.report_filter.purok = 'all'
-            }
-            if(state.report_filter.municipality == 'all'){
-                state.report_filter.barangay = 'all'
-                state.report_filter.purok = 'all'
-            }
-            if(state.report_filter.barangay == 'all'){
-                state.report_filter.purok = 'all'
-            }
-            commit('store')
+        reportReset ({state, commit, dispatch}, t = "") {
+            // if(state.report_filter.city == 'all'){
+            //     state.report_filter.municipality = 'all'
+            //     state.report_filter.barangay = 'all'
+            //     state.report_filter.purok = 'all'
+            // }
+            // if(state.report_filter.municipality == 'all'){
+            //     state.report_filter.barangay = 'all'
+            //     state.report_filter.purok = 'all'
+            // }
+            // if(state.report_filter.barangay == 'all'){
+            //     state.report_filter.purok = 'all'
+            // }
+            if(state.report_filter.city !== 'all' && t == 'city') dispatch('get_report_municipality')
+            if(state.report_filter.municipality !== 'all' && t == 'municipality') dispatch('get_report_brgy')
+            if(state.report_filter.barangay !== 'all' && t == 'barangay') dispatch('get_report_purok')
+            
             dispatch('get_bar_chart_report_data')
         },
         async get_bar_chart_report_data ({state}) {
@@ -766,6 +833,11 @@ const store = createStore({
                 { data: [], backgroundColor: 'gray', label: 'Undecided'},
                 { data: [], backgroundColor: 'lightgray', label: 'Unmarked'}
             ]
+
+            await axios.get('/bar-chart-total')
+            .then((res) => {
+                state.report_filter.chart.total = res.data.total
+            })
             
             await axios.post('/voters/bar-chart', {
                 "city": state.report_filter.city,
@@ -783,19 +855,66 @@ const store = createStore({
                 }))].filter(l=> l !== undefined)
                 console.log(labels)
                 datasets[0].data = res.data.datasets.right
+                datasets[0].total = res.data.datasets.tright
                 datasets[1].data = res.data.datasets.left
+                datasets[1].total = res.data.datasets.tleft
                 datasets[2].data = res.data.datasets.undecided
+                datasets[2].total = res.data.datasets.tundecided
                 datasets[3].data = res.data.datasets.none
+                datasets[3].total = res.data.datasets.tnone
                 state.report_filter.chart.bar.data = {
                     labels: labels,
                     datasets: datasets
                 }
-
-                state.report_filter.chart.total = res.data.total
+                state.report_filter.chart.bar.total = res.data.total
 
             })
+            .catch((err) => {
+                console.log(err)
+            })
+
 
         },
+        async get_report_city ({state}){
+            await axios.get('/cities?region='+ state.filter.region)
+            .then((res) => {
+                state.report_filter.list.cities = res.data
+            })
+        },
+        async get_report_municipality ({state}){
+            state.report_filter.municipality = "all"
+            state.report_filter.barangay = "all"
+            state.report_filter.purok = "all"
+            state.report_filter.house_number = "all"
+            if(state.report_filter.city == 'all'){
+            }else {
+               await axios.get('/municipalities',{ params: { id: state.report_filter.city.id}})
+                .then((res) => {
+                    state.report_filter.list.municipalities = res.data
+                })
+            }
+        },
+        async get_report_brgy ({state}){
+            state.report_filter.barangay = "all"
+            state.report_filter.purok = "all"
+            state.report_filter.house_number = "all"
+            if(state.report_filter.municipality == 'all'){
+            }else {
+                await axios.get('/barangay', { params: { id: state.report_filter.municipality.id}})
+                .then((res) => {
+                    state.report_filter.list.barangay = res.data
+                })
+            }
+        },
+        async get_report_purok ({state}){
+            state.report_filter.purok = "all"
+            state.report_filter.house_number = "all"
+            if(state.report_filter.barangay == 'all'){
+            }else {
+                console.log(state.report_filter.barangay)
+                state.report_filter.list.purok = state.report_filter.barangay.purok
+            }
+        }
 
         // #endregion
     }

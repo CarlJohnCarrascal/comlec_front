@@ -607,6 +607,19 @@ const store = createStore({
             barangay: "all",
             purok: "all",
             chart: {
+                total: {
+                    voters: 0,
+                    leader: 0,
+                    right: 0,
+                    left: 0,
+                    undecided: 0,
+                    unmarked: 0,
+                    cleader: 0,
+                    cright: 0,
+                    cleft: 0,
+                    cundecided: 0,
+                    cunmarked: 0
+                },
                 bar: {
                     data: {
                         labels: ["Barangay 1", "Barangay 1", "Barangay 1", "Barangay 1"],
